@@ -17,10 +17,12 @@ ARG REBUILD=unknown
 ARG VERSION
 RUN clojure -X:build uberjar :jar-name "app.jar" :verbose true :version '"'$VERSION'"'
 
-FROM amazoncorretto:11 AS app
+FROM clojure AS app
+RUN apt-get update && apt-get install -y tree pandoc && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY --from=build /app/app.jar app.jar
 EXPOSE 8080
-ARG VERSION
-ENV VERSION=$VERSION
-CMD java -DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$VERSION -jar app.jar
+ARG HOPS_GIT_SHA
+ENV HOPS_GIT_SHA=$HOPS_GIT_SHA
+CMD java -DHYPERFIDDLE_ELECTRIC_SERVER_VERSION=$HOPS_GIT_SHA -jar app.jar
