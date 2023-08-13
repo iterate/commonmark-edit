@@ -33,9 +33,4 @@ _for glory!_")))
           (set! text-html)))
      (dom/div
       (dom/div (dom/props {:id "vwnm4o"}))
-      (dom/pre (dom/text (e/server text-html)))
-      (dom/div
-       (dom/p (dom/text
-               "Q: how do I create a dom node with innerHTML equal to html-text?"
-               " Please advise!"))
-       (dom/p (dom/text "I'd like to have a preview of HTML I just generated here.")))))))
+      (dom/pre (dom/text (e/server text-html)))))))
