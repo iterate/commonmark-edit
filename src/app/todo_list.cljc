@@ -26,11 +26,7 @@ _for glory!_")))
                                    (when-some [v (.. e -target -value)]
                                      (e/server (reset! !text v))))))
    (let [text-html (e/server (-> text pandoc/from-markdown pandoc/to-html))]
-     (e/client
-      (-> js/document
-          (.getElementById "vwnm4o")
-          (.-innerHTML)
-          (set! text-html)))
+     (e/client (-> js/document (.getElementById "vwnm4o") (.-innerHTML) (set! text-html)))
      (dom/div
       (dom/div (dom/props {:id "vwnm4o"}))
       (dom/pre (dom/text (e/server text-html)))))))
