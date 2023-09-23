@@ -3,16 +3,18 @@
             [hyperfiddle.electric-dom2 :as dom]
             #?(:clj [app.pandoc :as pandoc])))
 
-#?(:clj (defonce !text (atom "# Your document
+#?(:clj (defonce !state (atom {:text "# Your document
 
 - major point 1
 - major point 2
 
-_for glory!_")))
-(e/def text (e/server (e/watch !text)))
+_for glory!_"})))
+
+(e/def state (e/server (e/watch !state)))
+(e/def text (:text state))
 
 (comment
-  (reset! !text "INSANE STUFF 4"))
+  (reset! !state "INSANE STUFF 4"))
 
 #?(:cljs
    (defn doc-from-url []
@@ -30,7 +32,7 @@ _for glory!_")))
                              :placeholder text})
                  (dom/on "input" (e/fn [e]
                                    (when-some [v (.. e -target -value)]
-                                     (e/server (reset! !text v))))))
+                                     (e/server (reset! !state v))))))
    (let [text-html (e/server (-> text pandoc/from-markdown pandoc/to-html))]
      (e/client (-> js/document (.getElementById "vwnm4o") (.-innerHTML) (set! text-html)))
      (dom/div
