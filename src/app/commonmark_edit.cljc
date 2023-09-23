@@ -7,11 +7,9 @@
 #?(:clj (defonce !global-state (atom {})))
 (e/def global-state (e/server (e/watch !global-state)))
 
-#?(:cljs
-   (defn doc-from-url []
-     (e/client
-      (.get (js/URLSearchParams. (-> js/window .-location .-search))
-            "doc"))))
+(e/defn doc-from-url []
+  (e/client (.get (js/URLSearchParams. (-> js/window .-location .-search))
+                  "doc")))
 
 (e/defn Edit-doc [doc-id]
   (e/server swap! !global-state update doc-id
@@ -22,10 +20,10 @@
                    (dom/text "."))))
 
 (e/defn Welcome []
-  (dom/p (dom/a (dom/props {:href (str "?doc=" (random-uuid))}) (dom/text "Create new document"))))
+  (e/client
+   (dom/p (dom/a (dom/props {:href (str "?doc=" (random-uuid))}) (dom/text "Create new document")))
 
-(e/defn init-if-empty [doc-id]
-  (e/server (println "PREPARING")))
+   ))
 
 (e/defn Editor []
   (e/client
@@ -33,6 +31,13 @@
    (dom/link (dom/props {:rel :stylesheet :href "/pandoc-preview.css"}))
    (dom/h1 (dom/text "Commonmark editor"))
    (dom/p (dom/em (dom/text "powered by Pandoc and Electric Clojure")))
+
+   (dom/p (dom/text "DEBUG"))
+   (dom/pre (dom/text (prn-str (e/client (.get (js/URLSearchParams. (-> js/window .-location .-search))
+                                               "doc")))))
+
+   (dom/p (dom/text "STOP_DEBUG"))
+
    (if-let [doc-id (doc-from-url)]
      (Edit-doc. doc-id)
      (Welcome.))
