@@ -14,8 +14,9 @@ _for glory!_")))
 (comment
   (reset! !text "INSANE STUFF 4"))
 
-(defn doc-from-url []
-  (.get (js/URLSearchParams. "?doc=teodor") "doc"))
+#?(:cljs
+   (defn doc-from-url []
+     (.get (js/URLSearchParams. "?doc=teodor") "doc")))
 
 (e/defn Markdown-editor []
   (e/client
