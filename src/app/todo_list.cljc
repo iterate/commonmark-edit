@@ -3,6 +3,13 @@
             [hyperfiddle.electric-dom2 :as dom]
             #?(:clj [app.pandoc :as pandoc])))
 
+;; plan
+;;
+;; 1. Read document from URL (how?)
+;; 2. Work on that document.
+;;    If it exists, cool, continue using it.
+;;    Otherwise, cool. It's an empty string.
+
 #_{:clj-kondo/ignore [:unresolved-namespace]}
 (defn markdown->html [md-str]
   (e/server (-> md-str pandoc/from-markdown pandoc/to-html)))
