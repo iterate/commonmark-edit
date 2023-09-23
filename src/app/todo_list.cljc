@@ -3,6 +3,10 @@
             [hyperfiddle.electric-dom2 :as dom]
             #?(:clj [app.pandoc :as pandoc])))
 
+#_{:clj-kondo/ignore [:unresolved-namespace]}
+(defn markdown->html [md-str]
+  (e/server (-> md-str pandoc/from-markdown pandoc/to-html)))
+
 #?(:clj (defonce !text (atom "# Your document
 
 - major point 1
@@ -25,7 +29,8 @@ _for glory!_")))
                  (dom/on "input" (e/fn [e]
                                    (when-some [v (.. e -target -value)]
                                      (e/server (reset! !text v))))))
-   (let [text-html (e/server (-> text pandoc/from-markdown pandoc/to-html))]
+   (let [text-html (markdown->html text)]
+     #_{:clj-kondo/ignore [:unresolved-namespace]}
      (e/client (-> js/document (.getElementById "vwnm4o") (.-innerHTML) (set! text-html)))
      (dom/div
       (dom/div (dom/props {:id "vwnm4o"}))
