@@ -14,12 +14,16 @@ _for glory!_")))
 (comment
   (reset! !text "INSANE STUFF 4"))
 
+(defn doc-from-url []
+  (.get (js/URLSearchParams. "?doc=teodor") "doc"))
+
 (e/defn Markdown-editor []
   (e/client
    (dom/link (dom/props {:rel :stylesheet :href "/todo-list.css"}))
    (dom/link (dom/props {:rel :stylesheet :href "/pandoc-preview.css"}))
    (dom/h1 (dom/text "Commonmark editor"))
    (dom/p (dom/em (dom/text "powered by Pandoc and Electric Clojure")))
+
    (dom/textarea (dom/props {:class "input-textfield"
                              :placeholder text})
                  (dom/on "input" (e/fn [e]
@@ -29,4 +33,11 @@ _for glory!_")))
      (e/client (-> js/document (.getElementById "vwnm4o") (.-innerHTML) (set! text-html)))
      (dom/div
       (dom/div (dom/props {:id "vwnm4o"}))
-      (dom/pre (dom/text (e/server text-html)))))))
+      (dom/pre (dom/text (e/server text-html)))))
+   (dom/section
+    (dom/h2 (dom/text "Debug info"))
+
+    (dom/pre (dom/text (e/client (.get (js/URLSearchParams. "?doc=teodor") "doc"))))
+    (dom/pre (dom/text (doc-from-url)))
+
+    )))
