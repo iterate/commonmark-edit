@@ -37,8 +37,5 @@ _for glory!_")))
       (dom/pre (dom/text (e/server text-html)))))
    (dom/section
     (dom/h2 (dom/text "Debug info"))
-
-    (dom/pre (dom/text (e/client (.get (js/URLSearchParams. "?doc=teodor") "doc"))))
-    (dom/pre (dom/text (doc-from-url)))
-
+    (dom/pre (dom/text (e/client (doc-from-url))))
     )))
