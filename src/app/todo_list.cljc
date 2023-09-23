@@ -16,7 +16,8 @@ _for glory!_")))
 
 #?(:cljs
    (defn doc-from-url []
-     (.get (js/URLSearchParams. "?doc=teodor") "doc")))
+     (.get (js/URLSearchParams. (-> js/window .-location .-search))
+           "doc")))
 
 (e/defn Markdown-editor []
   (e/client
