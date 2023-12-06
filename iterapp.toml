@@ -1,3 +1,6 @@
 port = 8080
 default_environment = "prod"
 readiness_path = "/"
+
+experimental.drittmaskin = true
+replicas = 1
